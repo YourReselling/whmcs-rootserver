@@ -1,0 +1,1815 @@
+{
+  "contractDigest": "a6cdf1be65f4bcb63fd16c07820052f53ccff30819262ec5393061ac44e03956",
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/products/rootserver/cluster/{cluster}/create",
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverController.php:257",
+      "required_fields": [
+        "os_version_id",
+        "hostname",
+        "cores",
+        "ram",
+        "disk",
+        "ipv4_count",
+        "ipv6_count"
+      ],
+      "response_id_path": "data.server.id",
+      "conditional_requirements": [
+        "reseller_ipv4_addresses required when use_reseller_pool=true"
+      ],
+      "body": {
+        "type": "object",
+        "properties": {
+          "admin_password": {
+            "type": "string",
+            "minLength": 8,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "min:8"
+            ],
+            "x-validation-expressions": []
+          },
+          "bandwidth_tier_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "uuid",
+              "exists:rootserver_bandwidth_tiers,id"
+            ],
+            "x-validation-expressions": []
+          },
+          "cores": {
+            "type": "integer",
+            "minimum": 1,
+            "x-validation": [
+              "required",
+              "integer",
+              "min:1"
+            ],
+            "x-validation-expressions": []
+          },
+          "disk": {
+            "type": "integer",
+            "minimum": 10,
+            "x-validation": [
+              "required",
+              "integer",
+              "min:10"
+            ],
+            "x-validation-expressions": []
+          },
+          "hostname": {
+            "type": "string",
+            "x-validation": [
+              "required",
+              "string"
+            ],
+            "x-validation-expressions": [
+              "new ValidHostname()"
+            ]
+          },
+          "ipv4_count": {
+            "type": "integer",
+            "minimum": 0,
+            "x-validation": [
+              "required",
+              "integer",
+              "min:0"
+            ],
+            "x-validation-expressions": []
+          },
+          "ipv6_count": {
+            "type": "integer",
+            "minimum": 0,
+            "x-validation": [
+              "required",
+              "integer",
+              "min:0"
+            ],
+            "x-validation-expressions": []
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:1000"
+            ],
+            "x-validation-expressions": []
+          },
+          "os_version_id": {
+            "type": "string",
+            "format": "uuid",
+            "x-validation": [
+              "required",
+              "string",
+              "uuid",
+              "exists:rootserver_os_versions,id"
+            ],
+            "x-validation-expressions": []
+          },
+          "ram": {
+            "type": "integer",
+            "minimum": 512,
+            "x-validation": [
+              "required",
+              "integer",
+              "min:512"
+            ],
+            "x-validation-expressions": []
+          },
+          "reseller_ipv4_addresses": {
+            "type": "array",
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "array",
+              "required_if:use_reseller_pool,true"
+            ],
+            "items": {
+              "type": "string",
+              "x-validation": [
+                "string",
+                "ip"
+              ],
+              "x-validation-expressions": []
+            },
+            "x-validation-expressions": []
+          },
+          "ssh_key_ids": {
+            "type": "array",
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "array"
+            ],
+            "items": {
+              "type": "string",
+              "x-validation": [
+                "string"
+              ],
+              "x-validation-expressions": []
+            },
+            "x-validation-expressions": []
+          },
+          "startup_script_id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "uuid",
+              "exists:rootserver_startup_scripts,id"
+            ],
+            "x-validation-expressions": []
+          },
+          "use_reseller_pool": {
+            "type": "boolean",
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "boolean"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "cores",
+          "disk",
+          "hostname",
+          "ipv4_count",
+          "ipv6_count",
+          "os_version_id",
+          "ram"
+        ]
+      },
+      "bodyRequired": true,
+      "pathParameters": [
+        {
+          "name": "cluster",
+          "type": "string",
+          "description": "cluster route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "rootservers:create"
+      ],
+      "responseMode": "json"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}",
+      "group": "rootserver",
+      "name": "get",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}",
+      "summary": "Show rootserver details",
+      "description": "Returns detailed information about a specific rootserver.",
+      "germanSummary": "Rootserver-Details anzeigen",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Server details",
+          "germanDescription": "Server-Details",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverController.php:113",
+      "routeName": "api.rootserver.show"
+    },
+    {
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/delete",
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverController.php:303",
+      "semantics": "async lifecycle task",
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "permissions": [
+        "rootservers:delete"
+      ],
+      "responseMode": "json"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/backups",
+      "group": "rootserver",
+      "name": "backupsIndex",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/backups",
+      "summary": "List backups",
+      "description": "Returns all backups for a rootserver.",
+      "germanSummary": "Backups auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "List of backups",
+          "germanDescription": "Liste der Backups",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverBackupController.php:38",
+      "routeName": "api.rootserver.backups.index"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/ddos",
+      "group": "rootserver",
+      "name": "ddosServer",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/ddos",
+      "summary": "List DDoS alerts for a server",
+      "description": "Returns paginated DDoS alerts for a specific rootserver. Bandwidth and packet metrics are only visible when can_view_ddos_metrics is enabled.",
+      "germanSummary": "DDoS-Alerts eines Servers auflisten",
+      "permissions": [
+        "ddos_protection:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {
+          "timeframe": {
+            "description": "Time range filter (24h, 7d, 30d, 90d, all)",
+            "type": "string",
+            "default": "7d"
+          },
+          "status": {
+            "description": "Filter by status (detecting, active, mitigated, ended)",
+            "type": "string"
+          },
+          "severity": {
+            "description": "Filter by severity (low, medium, high, critical)",
+            "type": "string"
+          },
+          "sort": {
+            "description": "Sort field with optional - prefix for desc (e.g. -started_at)",
+            "type": "string",
+            "default": "-started_at"
+          },
+          "per_page": {
+            "description": "Results per page (1-100)",
+            "type": "integer",
+            "default": "15"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Paginated DDoS alerts",
+          "germanDescription": "Paginierte DDoS-Alerts",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverDdosController.php:33",
+      "routeName": "api.rootserver.ddos.server"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/firewall/rules",
+      "group": "rootserver",
+      "name": "firewallRules",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/firewall/rules",
+      "summary": "List firewall rules",
+      "description": "Returns all firewall rules for a rootserver.",
+      "germanSummary": "Firewall-Regeln auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Firewall rules",
+          "germanDescription": "Firewall-Regeln",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverFirewallController.php:99",
+      "routeName": "api.rootserver.firewall.rules"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/historical-stats",
+      "group": "rootserver",
+      "name": "historicalStats",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/historical-stats",
+      "summary": "Get historical server stats",
+      "description": "Returns historical stats with automatic granularity based on time range.",
+      "germanSummary": "Historische Server-Statistiken abrufen",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "description": "Time period (1h, 6h, 24h, 7d, 30d)",
+            "type": "string",
+            "default": "24h",
+            "enum": [
+              "1h",
+              "6h",
+              "24h",
+              "7d",
+              "30d"
+            ],
+            "x-validation": [
+              "sometimes",
+              "string",
+              "in:1h,6h,24h,7d,30d"
+            ],
+            "x-validation-expressions": []
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time",
+            "x-validation": [
+              "sometimes",
+              "date"
+            ],
+            "x-validation-expressions": []
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time",
+            "x-validation": [
+              "sometimes",
+              "date"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Historical stats",
+          "germanDescription": "Historische Statistiken",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverStatsController.php:65",
+      "routeName": "api.rootserver.historical-stats"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/ips",
+      "group": "rootserver",
+      "name": "ipsIndex",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/ips",
+      "summary": "List rootserver IPs",
+      "description": "",
+      "germanSummary": "Rootserver-IP-Adressen auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Assigned IP addresses",
+          "germanDescription": "Zugewiesene IP-Adressen",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverIpController.php:34",
+      "routeName": "api.rootserver.ips.index"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/isos",
+      "group": "rootserver",
+      "name": "isosIndex",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/isos",
+      "summary": "List available ISOs",
+      "description": "",
+      "germanSummary": "Verfügbare ISOs auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "ISO catalog",
+          "germanDescription": "ISO-Katalog",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverIsoController.php:33",
+      "routeName": "api.rootserver.isos.index"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/live-stats",
+      "group": "rootserver",
+      "name": "liveStats",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/live-stats",
+      "summary": "Get live server stats",
+      "description": "Returns real-time CPU, RAM, disk, and network stats from Proxmox.",
+      "germanSummary": "Live-Server-Statistiken abrufen",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Live stats",
+          "germanDescription": "Live-Statistiken",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverStatsController.php:35",
+      "routeName": "api.rootserver.live-stats"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/rdns",
+      "group": "rootserver",
+      "name": "rdnsIndex",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/rdns",
+      "summary": "List rDNS records",
+      "description": "Returns all IP addresses with their rDNS records for a rootserver.",
+      "germanSummary": "rDNS-Eintraege auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "rDNS records",
+          "germanDescription": "rDNS-Eintraege",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverRdnsController.php:31",
+      "routeName": "api.rootserver.rdns.index"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/tasks",
+      "group": "rootserver",
+      "name": "serverTasksIndex",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/tasks",
+      "summary": "List server tasks",
+      "description": "Returns a paginated list of tasks for a specific rootserver.",
+      "germanSummary": "Server-Aufgaben auflisten",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {
+          "status[]": {
+            "description": "Filter by status(es)",
+            "type": "array",
+            "items": {}
+          },
+          "type[]": {
+            "description": "Filter by type(s)",
+            "type": "array",
+            "items": {}
+          },
+          "created_from": {
+            "description": "From date (Y-m-d)",
+            "type": "string"
+          },
+          "created_to": {
+            "description": "To date (Y-m-d)",
+            "type": "string"
+          },
+          "sort": {
+            "description": "Sort field (prefix - for desc)",
+            "type": "string",
+            "default": "-created_at"
+          },
+          "per_page": {
+            "description": "Items per page (max 100)",
+            "type": "integer",
+            "default": 15
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "List of server tasks",
+          "germanDescription": "Liste der Server-Aufgaben",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverTaskController.php:111",
+      "routeName": "api.rootserver.server-tasks.index"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/traffic/history",
+      "group": "rootserver",
+      "name": "trafficHistory",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/traffic/history",
+      "summary": "GET /products/rootserver/{rootserver}/traffic/history",
+      "description": "",
+      "germanSummary": "",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverTrafficController.php:34",
+      "routeName": "api.rootserver.traffic.history"
+    },
+    {
+      "id": "GET /products/rootserver/{rootserver}/traffic/summary",
+      "group": "rootserver",
+      "name": "trafficSummary",
+      "method": "GET",
+      "path": "/products/rootserver/{rootserver}/traffic/summary",
+      "summary": "GET /products/rootserver/{rootserver}/traffic/summary",
+      "description": "",
+      "germanSummary": "",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverTrafficController.php:58",
+      "routeName": "api.rootserver.traffic.summary"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/backups/create",
+      "group": "rootserver",
+      "name": "backupsCreate",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/backups/create",
+      "summary": "Create backup",
+      "description": "Creates a new backup. Returns 202 with a task for tracking.",
+      "germanSummary": "Backup erstellen",
+      "permissions": [
+        "rootservers:create"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Backup name (auto-generated if empty)",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:1000"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Backup creation started",
+          "germanDescription": "Backup-Erstellung gestartet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverBackupController.php:95",
+      "routeName": "api.rootserver.backups.create",
+      "label": "Backup erstellen"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/firewall/apply",
+      "group": "rootserver",
+      "name": "firewallApply",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/firewall/apply",
+      "summary": "Apply firewall preset",
+      "description": "Applies a firewall preset to a rootserver. Replaces all existing rules. Returns 202 with a task.",
+      "germanSummary": "Firewall-Vorlage anwenden",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "preset_id": {
+            "type": "string",
+            "description": "Firewall preset ID",
+            "format": "uuid",
+            "x-validation": [
+              "required",
+              "string",
+              "uuid",
+              "exists:rootserver_firewall_presets,id"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "preset_id"
+        ]
+      },
+      "bodyRequired": true,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Preset application started",
+          "germanDescription": "Vorlagen-Anwendung gestartet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverFirewallController.php:73",
+      "routeName": "api.rootserver.firewall.apply",
+      "label": "Firewall anwenden"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/firewall/rules/create",
+      "group": "rootserver",
+      "name": "firewallRulesCreate",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/firewall/rules/create",
+      "summary": "Create firewall rule",
+      "description": "Creates a new firewall rule and syncs to Proxmox.",
+      "germanSummary": "Firewall-Regel erstellen",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "accept",
+              "drop",
+              "reject"
+            ],
+            "x-validation": [
+              "required",
+              "string",
+              "in:accept,drop,reject"
+            ],
+            "x-validation-expressions": []
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "destination": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "destination_port": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out"
+            ],
+            "x-validation": [
+              "required",
+              "string",
+              "in:in,out"
+            ],
+            "x-validation-expressions": []
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "tcp",
+              "udp",
+              "icmp",
+              "any"
+            ],
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "in:tcp,udp,icmp,any"
+            ],
+            "x-validation-expressions": []
+          },
+          "source": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "source_port": {
+            "type": "string",
+            "maxLength": 255,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "action",
+          "direction"
+        ]
+      },
+      "bodyRequired": true,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 201,
+          "description": "Rule created",
+          "germanDescription": "Regel erstellt",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverFirewallController.php:125",
+      "routeName": "api.rootserver.firewall.rules.create",
+      "label": "Firewall-Regel erstellen"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/iso/custom",
+      "group": "rootserver",
+      "name": "isoCustom",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/iso/custom",
+      "summary": "Mount custom ISO from HTTPS URL",
+      "description": "Proxmox downloads the ISO, mounts it as CD-ROM and prefers CD boot. Unmount deletes the custom file.",
+      "germanSummary": "Custom-ISO per HTTPS-Link laden und einbinden",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Public HTTPS URL ending in .iso",
+            "maxLength": 2048,
+            "format": "uri",
+            "x-validation": [
+              "required",
+              "string",
+              "max:2048",
+              "url:https"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "url"
+        ]
+      },
+      "bodyRequired": true,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Download started",
+          "germanDescription": "Download gestartet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverIsoController.php:118",
+      "routeName": "api.rootserver.iso.custom",
+      "label": "Eigene ISO einlegen"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/iso/mount",
+      "group": "rootserver",
+      "name": "isoMount",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/iso/mount",
+      "summary": "Mount catalog ISO",
+      "description": "",
+      "germanSummary": "Katalog-ISO einbinden",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "iso_path": {
+            "type": "string",
+            "description": "Proxmox volume ID, e.g. local:iso/debian.iso",
+            "maxLength": 255,
+            "x-validation": [
+              "required",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "iso_path"
+        ]
+      },
+      "bodyRequired": true,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "ISO mounted",
+          "germanDescription": "ISO eingebunden",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverIsoController.php:76",
+      "routeName": "api.rootserver.iso.mount",
+      "label": "ISO einlegen"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/iso/unmount",
+      "group": "rootserver",
+      "name": "isoUnmount",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/iso/unmount",
+      "summary": "Unmount ISO",
+      "description": "Unmounts the CD-ROM. A custom ISO downloaded via URL is deleted from storage.",
+      "germanSummary": "ISO aushängen",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "ISO unmounted",
+          "germanDescription": "ISO ausgehängt",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverIsoController.php:155",
+      "routeName": "api.rootserver.iso.unmount",
+      "label": "ISO auswerfen"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/rdns/update",
+      "group": "rootserver",
+      "name": "rdnsUpdate",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/rdns/update",
+      "summary": "Update rDNS record",
+      "description": "Updates the rDNS record for an IP address. Returns 202 with a task for tracking.",
+      "germanSummary": "rDNS-Eintrag aktualisieren",
+      "permissions": [
+        "rootservers:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "ip_id": {
+            "type": "string",
+            "description": "IP address ID",
+            "format": "uuid",
+            "x-validation": [
+              "required",
+              "string",
+              "uuid"
+            ],
+            "x-validation-expressions": []
+          },
+          "rdns": {
+            "type": "string",
+            "description": "rDNS hostname",
+            "maxLength": 253,
+            "nullable": true,
+            "x-validation": [
+              "nullable",
+              "string",
+              "max:253",
+              "regex:/^[a-zA-Z0-9][a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "ip_id"
+        ]
+      },
+      "bodyRequired": true,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "rDNS update started",
+          "germanDescription": "rDNS-Aktualisierung gestartet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverRdnsController.php:82",
+      "routeName": "api.rootserver.rdns.update",
+      "label": "Reverse DNS ändern"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/restart",
+      "group": "rootserver",
+      "name": "restart",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/restart",
+      "summary": "Restart rootserver",
+      "description": "Restarts a running rootserver.",
+      "germanSummary": "Rootserver neustarten",
+      "permissions": [
+        "rootservers:power"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Restart initiated",
+          "germanDescription": "Neustart eingeleitet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverPowerController.php:108",
+      "routeName": "api.rootserver.restart",
+      "label": "Neu starten"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/start",
+      "group": "rootserver",
+      "name": "start",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/start",
+      "summary": "Start rootserver",
+      "description": "Starts a stopped rootserver.",
+      "germanSummary": "Rootserver starten",
+      "permissions": [
+        "rootservers:power"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Start initiated",
+          "germanDescription": "Start eingeleitet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverPowerController.php:32",
+      "routeName": "api.rootserver.start",
+      "label": "Starten"
+    },
+    {
+      "id": "POST /products/rootserver/{rootserver}/stop",
+      "group": "rootserver",
+      "name": "stop",
+      "method": "POST",
+      "path": "/products/rootserver/{rootserver}/stop",
+      "summary": "Stop rootserver (graceful)",
+      "description": "Gracefully stops a running rootserver via ACPI shutdown.",
+      "germanSummary": "Rootserver stoppen (ACPI Shutdown)",
+      "permissions": [
+        "rootservers:power"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "rootserver",
+          "type": "string",
+          "description": "rootserver route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 202,
+          "description": "Stop initiated",
+          "germanDescription": "Stopp eingeleitet",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverPowerController.php:60",
+      "routeName": "api.rootserver.stop",
+      "label": "Stoppen"
+    },
+    {
+      "id": "GET /account",
+      "group": "account",
+      "name": "get",
+      "method": "GET",
+      "path": "/account",
+      "summary": "Get account details",
+      "description": "Returns the authenticated reseller account details including company information, contact details, tax information, enabled products, and credit balance.",
+      "germanSummary": "Kontoinformationen abrufen",
+      "permissions": [
+        "account:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Account details",
+          "germanDescription": "Kontoinformationen",
+          "schema": null,
+          "example": {
+            "success": true,
+            "data": {
+              "id": "9e1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+              "company_name": "Example GmbH",
+              "contact_name": "Max Mustermann",
+              "email": "max@example.com",
+              "phone": "+49 123 456789",
+              "address": "Musterstraße 1",
+              "city": "Berlin",
+              "zip": "10115",
+              "country": "DE",
+              "tax_id": "DE123456789",
+              "tax_type": "eu_vat",
+              "status": "active",
+              "enabled_products": [
+                "rootserver",
+                "domains",
+                "kubernetes"
+              ],
+              "is_main_reseller": true,
+              "credit_limit": "500.00",
+              "credit_used": "123.45",
+              "credit_available": "376.55",
+              "created_at": "2025-01-15T10:30:00.000000Z"
+            }
+          },
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Account/AccountController.php:53",
+      "routeName": "api.account.show"
+    },
+    {
+      "id": "PATCH /account",
+      "group": "account",
+      "name": "update",
+      "method": "PATCH",
+      "path": "/account",
+      "summary": "Update account details",
+      "description": "Updates non-critical account fields such as company name, contact name, phone, and address. Email, tax ID, and status cannot be changed via API.",
+      "germanSummary": "Kontoinformationen aktualisieren",
+      "permissions": [
+        "account:update"
+      ],
+      "authenticated": true,
+      "pathParameters": [],
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "description": "Company name",
+            "example": "Example GmbH",
+            "maxLength": 255,
+            "x-validation": [
+              "sometimes",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "contact_name": {
+            "type": "string",
+            "description": "Contact person name",
+            "example": "Max Mustermann",
+            "maxLength": 255,
+            "x-validation": [
+              "sometimes",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number",
+            "example": "+49 123 456789",
+            "maxLength": 50,
+            "nullable": true,
+            "x-validation": [
+              "sometimes",
+              "nullable",
+              "string",
+              "max:50"
+            ],
+            "x-validation-expressions": []
+          },
+          "address": {
+            "type": "string",
+            "description": "Street address",
+            "example": "Musterstraße 1",
+            "maxLength": 255,
+            "x-validation": [
+              "sometimes",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "city": {
+            "type": "string",
+            "description": "City",
+            "example": "Berlin",
+            "maxLength": 255,
+            "x-validation": [
+              "sometimes",
+              "string",
+              "max:255"
+            ],
+            "x-validation-expressions": []
+          },
+          "zip": {
+            "type": "string",
+            "description": "ZIP code",
+            "example": "10115",
+            "maxLength": 20,
+            "x-validation": [
+              "sometimes",
+              "string",
+              "max:20"
+            ],
+            "x-validation-expressions": []
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Account updated successfully",
+          "germanDescription": "Konto erfolgreich aktualisiert",
+          "schema": null,
+          "example": {
+            "success": true,
+            "data": {
+              "id": "9e1a2b3c-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+              "company_name": "Updated GmbH",
+              "contact_name": "Max Mustermann"
+            }
+          },
+          "contentType": "application/json"
+        },
+        {
+          "status": 422,
+          "description": "Validation error",
+          "germanDescription": "Validierungsfehler",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Account/AccountController.php:92",
+      "routeName": "api.account.update"
+    },
+    {
+      "id": "GET /products/rootserver/tasks/{task}",
+      "group": "rootserver",
+      "name": "tasksGlobalShow",
+      "method": "GET",
+      "path": "/products/rootserver/tasks/{task}",
+      "summary": "Show task details (global)",
+      "description": "Returns details of a specific task.",
+      "germanSummary": "Aufgaben-Details anzeigen (global)",
+      "permissions": [
+        "rootservers:read"
+      ],
+      "authenticated": true,
+      "pathParameters": [
+        {
+          "name": "task",
+          "type": "string",
+          "description": "task route parameter"
+        }
+      ],
+      "query": {
+        "type": "object",
+        "properties": {
+          "include": {}
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true
+      },
+      "bodyRequired": false,
+      "requestContentType": "application/json",
+      "responseMode": "json",
+      "responses": [
+        {
+          "status": 200,
+          "description": "Task details",
+          "germanDescription": "Aufgaben-Details",
+          "schema": null,
+          "example": null,
+          "contentType": "application/json"
+        }
+      ],
+      "deprecated": false,
+      "source": "app/Http/Controllers/Api/V1/Rootserver/RootserverTaskController.php:80",
+      "routeName": "api.rootserver.tasks.global-show"
+    }
+  ]
+}
